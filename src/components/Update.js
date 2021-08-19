@@ -1,31 +1,45 @@
 import React, { useState } from 'react'
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Field, reduxForm } from 'redux-form';
-import { createUsers } from '../actions/actions';
-import { Link } from 'react-router-dom'
+import { createUsers, getUserById, updateUser } from '../actions/actions';
+import { Link, useParams } from 'react-router-dom'
+import { useEffect } from 'react';
 
-const Create = () =>
+const Update = () =>
 {
-    const dispatch = useDispatch();
+    const id = useParams();
 
-    const [name, Setname] = useState('');
-    const [email, Setemail] = useState('');
-    const [gender, Setgender] = useState('');
-    const [phone, Setphone] = useState('');
-    const [city, Setcity] = useState('');
-    const [pin, Setpin] = useState('');
+    const dispatch = useDispatch();
+    useEffect(()=>{
+        dispatch(getUserById(id.id))
+    },[id])
+
+    
+    const userId = useSelector(state=>state.userList)
+    const {usersdata,loading} = userId
+
+    console.log('-------',usersdata)
+
+    const [name, Setname] = useState(usersdata.name);
+    const [email, Setemail] = useState(usersdata.email);
+    const [gender, Setgender] = useState(usersdata.gender);
+    const [phone, Setphone] = useState(usersdata.phone);
+    const [city, Setcity] = useState(usersdata.city);
+    const [pin, Setpin] = useState(usersdata.pin);
+
 
     const submitHandler = (e) =>
     {
         e.preventDefault();
-        dispatch(createUsers(
+    dispatch(updateUser(
+            id,
             name,
             email,
             gender,
             phone,
             city,
             pin
-        ))
+        )) 
     }
 
     return (
@@ -48,6 +62,7 @@ const Create = () =>
                                         type="text"
                                         placeholder="Name"
                                         value={name}
+                                        defaultValue={usersdata.name}
                                         class="form-control"
                                         onChange={(e) => Setname(e.target.value)}
                                     />
@@ -132,7 +147,7 @@ const Create = () =>
                                 </div>
                             </div>
                             <div className='text-center'>
-                                <button type='submit' class="btn btn-primary" onClick={submitHandler}>Create</button>
+                                <button type='submit' class="btn btn-primary" onClick={submitHandler}>Update</button>
                             </div>
                         </form>
                     </div>
@@ -143,5 +158,5 @@ const Create = () =>
 }
 
 export default reduxForm({
-    form: "create-user",
-})(Create);
+    form: "update-user",
+})(Update);

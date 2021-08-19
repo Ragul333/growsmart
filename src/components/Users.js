@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { Link } from 'react-router-dom'
 import { deleteUser, listUser } from '../actions/actions'
 
-export const Users = () =>
+export const Users = ({location}) =>
 {
     const dispatch = useDispatch()
 
@@ -14,6 +14,7 @@ export const Users = () =>
             dispatch(listUser())
         }
     }
+
 
     const users = useSelector(state => state.userList);
     const { usersdata, loading } = users;
@@ -30,7 +31,7 @@ export const Users = () =>
                 <div className='col-md-8 mx-auto'>
                 <div className='text-right mb-2'>
                        <Link to='/'>
-                            <button type='submit' class="btn btn-primary"> + </button>
+                            <button class="btn btn-primary"> + </button>
                        </Link>
                         </div> 
                     <ul class="list-group">
@@ -42,9 +43,12 @@ export const Users = () =>
                                 return (
 
                                     <li class="list-group-item d-flex">
-                                        <p className='text-left'>{user.name}</p>
+                                        <p className='text-left'>{user?.name}</p>
                                         <div className='delete'>
-                                            <button class="btn btn-danger" onClick={() => deleteHandler(user.id)}>🗑️</button>
+                                            <button class="btn btn-outline-danger" onClick={() => deleteHandler(user?.id)}>🗑️</button>{" "}
+                                            <Link to={`/${user?.id}`}>
+                                            <button class="btn btn-outline-success">✏️️</button>
+                                            </Link>
                                         </div>
                                     </li>
 

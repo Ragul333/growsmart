@@ -1,11 +1,14 @@
 #form {
   border: 1px solid lightgray;
   padding: 10px;
+  box-shadow: 5px 10px rgb(243, 243, 243);
 }
 
 .container {
   margin: 5% auto;
+
 }
 .delete {
   margin-left: auto;
 }
+
